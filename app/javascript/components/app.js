@@ -1,8 +1,14 @@
 import React from 'react'
+import { Route, Switch } from 'react-router-dom'
+import Kitties from "./Kitties/kitties";
+import Kitty from "./Kitty/kitty";
 
 const App = () => {
   return (
-    <div>Hello there!</div>
+    <Switch>
+      <Route exact path="/" component={Kitties}/>
+      <Route exact path="/kitties/:slug" component={Kitty}/>
+    </Switch>
   )
 }
 
