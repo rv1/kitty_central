@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import Rating from "../rating/rating";
 
 const Card = styled.div`
   border: 1px solid #efefef;
@@ -45,7 +46,7 @@ const Kitty = (props) => {
         <img src={props.attributes.image_url} alt={props.attributes.name}/>
       </Photo>
       <Name>{props.attributes.name}</Name>
-      <div className="kitty-score">{props.attributes.avg_score}</div>
+      <Rating score={props.attributes.avg_score}/>
       <LinkWrapper>
         <Link to={`/kitties/${props.attributes.slug}`}>View Kitty</Link>
       </LinkWrapper>

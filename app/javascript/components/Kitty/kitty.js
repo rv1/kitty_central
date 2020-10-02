@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Header from './header'
 import ReviewForm from './review_form'
+import Review from './review'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
@@ -61,6 +62,20 @@ const Kitty = (props) => {
   const setRating = (score, e) => {
     setReview({...review, score})
   }
+  let reviews
+  if (loaded && kitty.included) {
+    reviews = kitty.included.map((item, index) => {
+      return (
+        <Review
+          key={index}
+          title={item.attributes.title}
+          description={item.attributes.description}
+          score={item.attributes.score}
+        />
+      )
+    })
+  }
+
   return (
     <Wrapper>
       {loaded &&
@@ -71,7 +86,7 @@ const Kitty = (props) => {
                 attributes={kitty.data.attributes}
                 reviews={kitty.included}
               />
-              <div className="reviews"></div>
+              {reviews}
             </Main>
           </Column>
           <Column>
