@@ -18,7 +18,6 @@ const Photo = styled.div`
     border-radius: 100%
     border: 1px solid #efefef;
   }
-  
 `
 const Name = styled.div`
   padding: 20px 0 10px 0;
