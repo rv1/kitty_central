@@ -4,7 +4,9 @@ import styled from 'styled-components'
 import { 
   KittyDispatchContext, 
   KittyStateContext, 
-  fetchAllKitties 
+  fetchAllKitties,
+  subscribeToKitties,
+  unsubscribeFromKitties
 } from '../../context/KittyContext'
 
 const Home = styled.div`
@@ -33,10 +35,15 @@ const Grid = styled.div`
 `
 
 const Kitties = () => {
-  const kitties = useContext(KittyStateContext)
+  const { kitties } = useContext(KittyStateContext)
   const dispatchKitties = useContext(KittyDispatchContext)
 
-  useEffect(() => fetchAllKitties(dispatchKitties), [])
+  useEffect(() => {
+    fetchAllKitties(dispatchKitties)
+    const channel = subscribeToKitties(dispatchKitties)
+
+    return () => unsubscribeFromKitties(channel)
+  }, [])
 
   const grid = kitties.map(item => {
     return (
