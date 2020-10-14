@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useContext, useEffect } from 'react'
 import Kitty from './kitty'
 import styled from 'styled-components'
+import { 
+  KittyDispatchContext, 
+  KittyStateContext, 
+  fetchAllKitties 
+} from '../../context/KittyContext'
 
 const Home = styled.div`
   text-align: center;
@@ -29,13 +33,10 @@ const Grid = styled.div`
 `
 
 const Kitties = () => {
-  const [kitties, setKitties] = useState([])
+  const kitties = useContext(KittyStateContext)
+  const dispatchKitties = useContext(KittyDispatchContext)
 
-  useEffect(() => {
-    axios.get('/api/v1/kitties')
-      .then(response => setKitties(response.data.data))
-      .catch(response => console.log(response))
-  }, [kitties.length])
+  useEffect(() => fetchAllKitties(dispatchKitties), [])
 
   const grid = kitties.map(item => {
     return (
