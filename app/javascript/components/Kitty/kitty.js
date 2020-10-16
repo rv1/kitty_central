@@ -3,28 +3,7 @@ import axios from 'axios'
 import Header from './header'
 import ReviewForm from './review_form'
 import Review from './review'
-import styled from 'styled-components'
-
-const Wrapper = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-`
-
-const Column = styled.div`
-  background: #fff;
-  height: 100vh;
-  overflow: scroll;
-
-  &:last-child {
-    background: #000
-  }
-`
-
-const Main = styled.div`
-  padding-left: 50px;
-`
+import { Wrapper, Column, Main } from './kitty.styles'
 
 const Kitty = (props) => {
   const [kitty, setKitty] = useState({})
