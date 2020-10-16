@@ -16,7 +16,7 @@ const Kitty = (props) => {
   useEffect(() => {
     const slug = props.match.params.slug
     fetchKittyBySlug(dispatch, slug)
-    let subscription = subscribeToKitty(dispatch)
+    let subscription = subscribeToKitty(dispatch, slug)
     return () => unsubscribeFromKitties(subscription)
   }, [])
 

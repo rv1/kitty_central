@@ -1,8 +1,8 @@
 import consumer from "./consumer"
 import { ACTIONS } from "../providers/cat_provider";
 
-export const subscribeToKitty = (dispatch) => {
-  return consumer.subscriptions.create("KittyChannel", {
+export const subscribeToKitty = (dispatch, slug) => {
+  return consumer.subscriptions.create({ channel: "KittyChannel", slug: slug }, {
     connected() {
       console.log("connected to KittyChannel")
     },

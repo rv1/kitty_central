@@ -7,6 +7,10 @@ class Review < ApplicationRecord
 
   def broadcast_review
     json = ReviewSerializer.new(self).serialized_json
-    ActionCable.server.broadcast 'kitty_channel', content: json
+    # Approach 1
+    # KittyChannel.broadcast_to self.kitty, content: json
+
+    # Approach 2
+    ActionCable.server.broadcast "kitty_#{self.kitty.slug}_channel", content: json
   end
 end
