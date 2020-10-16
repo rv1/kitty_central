@@ -6,7 +6,6 @@ module Api::V1
       review = kitty.reviews.new(review_params)
       if review.save
         json = ReviewSerializer.new(review).serialized_json
-        ActionCable.server.broadcast 'reviews_channel', content: json
         render json: json
       else
         render json: { error: review.errors.messages }, status: 422
