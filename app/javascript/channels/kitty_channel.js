@@ -1,19 +1,25 @@
 import consumer from "./consumer"
+import { ACTIONS } from "../providers/cat_provider";
 
-consumer.subscriptions.create("KittyChannel", {
-  connected() {
-    // Called when the subscription is ready for use on the server
-    console.log("connected to KittyChannel")
-  },
+export const subscribeToKitty = (dispatch) => {
+  return consumer.subscriptions.create("KittyChannel", {
+    connected() {
+      console.log("connected to KittyChannel")
+    },
 
-  disconnected() {
-    // Called when the subscription has been terminated by the server
-    console.log("disconnected from KittyChannel")
-  },
+    disconnected() {
+      console.log("disconnected from KittyChannel")
+    },
 
-  received(data) {
-    // Called when there's incoming data on the websocket for this channel
-    console.log("received from KittyChannel")
-    console.log(data)
-  }
-});
+    received(data) {
+      console.log("received from KittyChannel")
+      console.log(data)
+      const review = JSON.parse(data.content).data
+      dispatch({ type: ACTIONS.ADD_REVIEW, payload: review })
+    }
+  })
+}
+
+export function unsubscribeFromKitties(subscription) {
+  consumer.subscriptions.remove(subscription)
+}

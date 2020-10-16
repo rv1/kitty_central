@@ -6,7 +6,8 @@ export const ACTIONS = {
   SET_KITTIES: "SET_KITTIES",
   SET_KITTY: "SET_KITTY",
   SET_REVIEW: "SET_REVIEW",
-  POST_REVIEW: "POST_REVIEW"
+  POST_REVIEW: "POST_REVIEW",
+  ADD_REVIEW: "ADD_REVIEW"
 }
 
 const initialState = {
@@ -34,6 +35,13 @@ function reducer(state, action) {
       return {...state, review: action.payload}
     case ACTIONS.POST_REVIEW:
       return {...state, review: initialState.review}
+    case ACTIONS.ADD_REVIEW:
+      const newState = { ...state }
+      newState.kitty = {
+        ...state.kitty,
+        included: [...state.kitty.included, action.payload]
+      }
+      return newState
     default:
       return state
   }

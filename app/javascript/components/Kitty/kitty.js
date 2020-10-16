@@ -5,6 +5,7 @@ import Review from './review'
 import { Wrapper, Column, Main } from './kitty.styles'
 import { ACTIONS, useKitty } from "../../providers/cat_provider";
 import { fetchKittyBySlug, postReviewForKitty } from "../../clients/v1";
+import { subscribeToKitty, unsubscribeFromKitties } from "../../channels/kitty_channel";
 
 const sortByDescendingId = (a, b) => b.id - a.id
 
@@ -15,6 +16,8 @@ const Kitty = (props) => {
   useEffect(() => {
     const slug = props.match.params.slug
     fetchKittyBySlug(dispatch, slug)
+    let subscription = subscribeToKitty(dispatch)
+    return () => unsubscribeFromKitties(subscription)
   }, [])
 
   const handleChange = (e) => {
