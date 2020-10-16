@@ -13,7 +13,7 @@ const ReviewForm = (props) =>{
 
   return (
     <ReviewWrapper>
-      <form onSubmit={props.handleSubmit}>
+      <form>
         <ReviewHeadline>Have An Experience with {props.name}? Add Your Review!</ReviewHeadline>
         <Field>
           <input onChange={props.handleChange} type="text" name="title" placeholder="Review Title" value={props.review.title || ""}/>
@@ -29,7 +29,7 @@ const ReviewForm = (props) =>{
             </RatingBox>
           </RatingContainer>
         </Field>
-        <SubmitBtn type="Submit">Create Review</SubmitBtn>
+        <SubmitBtn type="button" onClick={props.handleSubmit}>Create Review</SubmitBtn>
       </form>
     </ReviewWrapper>
   )

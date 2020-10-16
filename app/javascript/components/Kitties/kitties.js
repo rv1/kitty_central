@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useEffect } from 'react'
 import Kitty from './kitty'
+import { useKitty } from "../../providers/cat_provider";
+import { fetchAllKitties } from "../../clients/v1";
 import { Grid, Header, Home, Subheader } from "./kitties.styles";
 
 const Kitties = () => {
-  const [kitties, setKitties] = useState([])
+  const [state, dispatch] = useKitty()
+  const { kitties } = state
 
   useEffect(() => {
-    axios.get('/api/v1/kitties')
-      .then(response => setKitties(response.data.data))
-      .catch(response => console.log(response))
-  }, [kitties.length])
+    fetchAllKitties(dispatch)
+  }, [])
 
   const grid = kitties.map(item => {
     return (

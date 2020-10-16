@@ -1,84 +1,70 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useEffect } from 'react'
 import Header from './header'
 import ReviewForm from './review_form'
 import Review from './review'
 import { Wrapper, Column, Main } from './kitty.styles'
+import { ACTIONS, useKitty } from "../../providers/cat_provider";
+import { fetchKittyBySlug, postReviewForKitty } from "../../clients/v1";
+
+const sortByDescendingId = (a, b) => b.id - a.id
 
 const Kitty = (props) => {
-  const [kitty, setKitty] = useState({})
-  const [review, setReview] = useState({})
-  const [loaded, setLoaded] = useState(false)
+  const [state, dispatch] = useKitty()
+  const { kitty, review, loading } = state
 
   useEffect(() => {
     const slug = props.match.params.slug
-    const url = `/api/v1/kitties/${slug}`
-    axios.get(url)
-      .then(response => {
-        setKitty(response.data)
-        setLoaded(true)
-      })
-      .catch(response => console.log(response))
+    fetchKittyBySlug(dispatch, slug)
   }, [])
 
   const handleChange = (e) => {
-    setReview(Object.assign({}, review, {[e.target.name]: e.target.value}))
+    dispatch({ type: ACTIONS.SET_REVIEW, payload: {...review, [e.target.name]: e.target.value}})
   }
 
   const handleSubmit = (e) => {
-    const kitty_id = kitty.data.id
-    const csrfToken = document.querySelector('[name=csrf-token]').content
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
-    axios.post("/api/v1/reviews", {review, kitty_id})
-      .then(response => {
-        const included = [...kitty.included, response.data.data]
-        setKitty({...kitty, included})
-        setReview({title: '', description: '', score: 0})
-      })
-      .catch(response => {})
+    postReviewForKitty(dispatch, review, kitty)
   }
 
   const setRating = (score, e) => {
-    setReview({...review, score})
+    dispatch({ type: ACTIONS.SET_REVIEW, payload: {...review, score}})
   }
-  let reviews
-  if (loaded && kitty.included) {
-    reviews = kitty.included.map((item, index) => {
-      return (
-        <Review
-          key={index}
-          title={item.attributes.title}
-          description={item.attributes.description}
-          score={item.attributes.score}
-        />
-      )
-    })
-  }
+
+  if (loading) { return 'Loading...' }
+  if (!kitty || !kitty.data) { return 'No kitty :(' }
+
+  let reviews = kitty.included
+      .sort(sortByDescendingId)
+      .map((item, index) => {
+        return (
+          <Review
+            key={index}
+            title={item.attributes.title}
+            description={item.attributes.description}
+            score={item.attributes.score}
+          />
+        )
+      })
 
   return (
     <Wrapper>
-      {loaded &&
-        <React.Fragment>
-          <Column>
-            <Main>
-              <Header
-                attributes={kitty.data.attributes}
-                reviews={kitty.included}
-              />
-              {reviews}
-            </Main>
-          </Column>
-          <Column>
-            <ReviewForm
-              handleChange={handleChange}
-              handleSubmit={handleSubmit}
-              setRating={setRating}
-              attributes={kitty.data.attributes}
-              review={review}
-            />
-          </Column>
-        </React.Fragment>
-      }
+      <Column>
+        <Main>
+          <Header
+            attributes={kitty.data.attributes}
+            reviews={kitty.included}
+          />
+          {reviews}
+        </Main>
+      </Column>
+      <Column>
+        <ReviewForm
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          setRating={setRating}
+          attributes={kitty.data.attributes}
+          review={review}
+        />
+      </Column>
     </Wrapper>
   )
 }
