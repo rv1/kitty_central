@@ -3,9 +3,9 @@ import Header from './header'
 import ReviewForm from './review_form'
 import Review from './review'
 import { Wrapper, Column, Main } from './kitty.styles'
-import { ACTIONS, useKitty } from "../../providers/cat_provider";
-import { fetchKittyBySlug, postReviewForKitty } from "../../clients/v1";
-import { subscribeToKitty, unsubscribeFromKitties } from "../../channels/kitty_channel";
+import { ACTIONS, useKitty } from '../../providers/cat_provider'
+import { fetchKittyBySlug, postReviewForKitty } from '../../clients/v1'
+import { subscribeToKitty, unsubscribeFromKitties } from '../../channels/kitty_channel'
 
 const sortByDescendingId = (a, b) => b.id - a.id
 
@@ -14,14 +14,14 @@ const Kitty = (props) => {
   const { kitty, review, loading } = state
 
   useEffect(() => {
-    const slug = props.match.params.slug
+    const { slug } = props.match.params
     fetchKittyBySlug(dispatch, slug)
-    let subscription = subscribeToKitty(dispatch, slug)
+    const subscription = subscribeToKitty(dispatch, slug)
     return () => unsubscribeFromKitties(subscription)
   }, [])
 
   const handleChange = (e) => {
-    dispatch({ type: ACTIONS.SET_REVIEW, payload: {...review, [e.target.name]: e.target.value}})
+    dispatch({ type: ACTIONS.SET_REVIEW, payload: { ...review, [e.target.name]: e.target.value } })
   }
 
   const handleSubmit = (e) => {
@@ -29,24 +29,22 @@ const Kitty = (props) => {
   }
 
   const setRating = (score, e) => {
-    dispatch({ type: ACTIONS.SET_REVIEW, payload: {...review, score}})
+    dispatch({ type: ACTIONS.SET_REVIEW, payload: { ...review, score } })
   }
 
   if (loading) { return 'Loading...' }
   if (!kitty || !kitty.data) { return 'No kitty :(' }
 
-  let reviews = kitty.included
-      .sort(sortByDescendingId)
-      .map((item, index) => {
-        return (
-          <Review
-            key={index}
-            title={item.attributes.title}
-            description={item.attributes.description}
-            score={item.attributes.score}
-          />
-        )
-      })
+  const reviews = kitty.included
+    .sort(sortByDescendingId)
+    .map((item, index) => (
+      <Review
+        key={index}
+        title={item.attributes.title}
+        description={item.attributes.description}
+        score={item.attributes.score}
+      />
+    ))
 
   return (
     <Wrapper>

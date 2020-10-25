@@ -7,11 +7,22 @@ const Header = (props) => {
 
   return (
     <Wrapper>
-      <h1><img src={image_url}/>{name}</h1>
+      <h1>
+        <img src={image_url} />
+        {name}
+      </h1>
       <div>
-        <TotalReviews>{total} User Reviews</TotalReviews>
-        <div className="starRating"></div>
-        <TotalOutOf>{avg_score} out of 5</TotalOutOf>
+        <TotalReviews>
+          {total}
+          {' '}
+          User Reviews
+        </TotalReviews>
+        <div className="starRating" />
+        <TotalOutOf>
+          {avg_score}
+          {' '}
+          out of 5
+        </TotalOutOf>
       </div>
     </Wrapper>
   )

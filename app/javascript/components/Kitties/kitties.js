@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
 import Kitty from './kitty'
-import { useKitty } from "../../providers/cat_provider";
-import { fetchAllKitties } from "../../clients/v1";
-import { Grid, Header, Home, Subheader } from "./kitties.styles";
+import { useKitty } from '../../providers/cat_provider'
+import { fetchAllKitties } from '../../clients/v1'
+import {
+  Grid, Header, Home, Subheader,
+} from './kitties.styles'
 
 const Kitties = () => {
   const [state, dispatch] = useKitty()
@@ -12,14 +14,12 @@ const Kitties = () => {
     fetchAllKitties(dispatch)
   }, [])
 
-  const grid = kitties.map(item => {
-    return (
-      <Kitty
-        key={item.attributes.name}
-        attributes={item.attributes}
-      />
-    )
-  })
+  const grid = kitties.map((item) => (
+    <Kitty
+      key={item.attributes.name}
+      attributes={item.attributes}
+    />
+  ))
   return (
     <Home>
       <Header>

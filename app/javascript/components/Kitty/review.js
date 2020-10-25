@@ -1,6 +1,8 @@
 import React from 'react'
 import Rating from '../rating/rating'
-import { Card, Title, Description, RatingContainer } from './review.styles'
+import {
+  Card, Title, Description, RatingContainer,
+} from './review.styles'
 
 const Review = (props) => {
   const { score, title, description } = props

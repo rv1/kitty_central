@@ -1,25 +1,29 @@
-import React, { Fragment } from "react";
-import { RatingContainer, RatingBox, Field, SubmitBtn, ReviewWrapper, ReviewHeadline, RatingBoxTitle } from './review_form.styles'
+import React, { Fragment } from 'react'
+import {
+  RatingContainer, RatingBox, Field, SubmitBtn, ReviewWrapper, ReviewHeadline, RatingBoxTitle,
+} from './review_form.styles'
 
-const ReviewForm = (props) =>{
-  const ratingOptions = [5,4,3,2,1].map((score, index) => {
-    return (
-      <Fragment key={index}>
-        <input type="radio" value={score} checked={props.review.score == score} onChange={()=>console.log('onChange')} name="rating" id={`rating-${score}`}/>
-        <label onClick={props.setRating.bind(this, score)}></label>
-      </Fragment>
-    )
-  })
+const ReviewForm = (props) => {
+  const ratingOptions = [5, 4, 3, 2, 1].map((score, index) => (
+    <Fragment key={index}>
+      <input type="radio" value={score} checked={props.review.score == score} onChange={() => console.log('onChange')} name="rating" id={`rating-${score}`} />
+      <label onClick={props.setRating.bind(this, score)} />
+    </Fragment>
+  ))
 
   return (
     <ReviewWrapper>
       <form>
-        <ReviewHeadline>Have An Experience with {props.name}? Add Your Review!</ReviewHeadline>
+        <ReviewHeadline>
+          Have An Experience with
+          {props.name}
+          ? Add Your Review!
+        </ReviewHeadline>
         <Field>
-          <input onChange={props.handleChange} type="text" name="title" placeholder="Review Title" value={props.review.title || ""}/>
+          <input onChange={props.handleChange} type="text" name="title" placeholder="Review Title" value={props.review.title || ''} />
         </Field>
         <Field>
-          <input onChange={props.handleChange} type="text" name="description" placeholder="Review Description" value={props.review.description || ""}/>
+          <input onChange={props.handleChange} type="text" name="description" placeholder="Review Description" value={props.review.description || ''} />
         </Field>
         <Field>
           <RatingContainer>
